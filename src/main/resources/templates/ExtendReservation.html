@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Extend Booking</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+</head>
+<body>
+
+<br>
+<br>
+<!-- Create HTML registration form -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <div th:if="${param.success}">
+                <div class="alert alert-info">Reservation Failed</div>
+            </div>
+
+            <h1>Extend Booking</h1>
+            <div th:object="${reservation}"></div>
+
+            <form th:action="@{/reservation/extendCurrentReservation}" method="post" th:object="${reservationRegistration}">
+                <input hidden th:field="*{renterID}"/>
+
+                <label class="control-label" for="renterFirstName"> First Name </label>
+                <input id="renterFirstName" type="text" disabled class="form-control"
+                       th:field="*{renter.firstName}"
+                       required autofocus="autofocus"/>
+
+                <div class="form-group">
+                    <label class="control-label" for="renterLastName"> Last Name </label>
+                    <input id="renterLastName" type="text" disabled class="form-control"
+                           th:field="*{renter.lastName}"
+                           required autofocus="autofocus"/>
+                </div>
+
+                <div th:object="${reservation}"></div>
+                <div class="col-12 col-lg pb-3 pb-lg-0 overflow-hidden">
+
+                    <div class="form-group">
+                        <label for="deliveryTime">Drop-Off Time:</label>
+
+                        <input id="deliveryTime" type="text" value="09:00 PM"/>
+                        <!--                        <input th:field="*{endTime}" class="form-control w-100" type="time"-->
+                        <!--                               name="deliveryTime" id="deliveryTime" value="09:00 PM" required>-->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" align="center" class="btn btn-success">Confirm Reservation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(function (){
+        $('#timepicker').timepicker('setTime', '12:45 AM');
+    })
+</script>
+</html>

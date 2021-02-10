@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Add Booking</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <script>
+        $(function () {
+
+            $('#startDate').val($.datepicker.formatDate('yy-mm-dd', new Date()));
+            $('#startDate').datepicker({
+                dateFormat: 'yy-mm-dd',
+                minDate: 0,
+            });
+
+            $('#endDate').datepicker({
+                dateFormat: 'yy-mm-dd',
+                beforeShow: function (input, inst) {
+                    var minDate = $('#startDate').datepicker('getDate');
+                    $('#endDate').datepicker('option', 'minDate', minDate);
+                    var maxDate = new Date(minDate.valueOf());
+                    maxDate.setDate(maxDate.getDate() + 14);
+                    $('#endDate').datepicker('option', 'maxDate', maxDate);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+<br>
+<br>
+<!-- Create HTML registration form -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <div th:if="${param.success}">
+                <div class="alert alert-info">Reservation Failed</div>
+            </div>
+
+            <h1>Add Booking</h1>
+            <div th:object="${reservation}"></div>
+
+            <form th:action="@{/reservation/saveReservation}" method="post" th:object="${reservation}">
+                <input hidden th:field="*{renterID}"/>
+                <input hidden th:field="*{vehicleID}"/>
+
+                <label class="control-label" for="renterFirstName"> First Name </label>
+                <input id="renterFirstName" type="text" disabled class="form-control"
+                       th:field="*{renter.firstName}"
+                       required autofocus="autofocus"/>
+
+                <div class="form-group">
+                    <label class="control-label" for="renterLastName"> Last Name </label>
+                    <input id="renterLastName" type="text" disabled class="form-control"
+                           th:field="*{renter.lastName}"
+                           required autofocus="autofocus"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="brand"> Brand </label>
+                    <input id="brand" type="text" disabled class="form-control" th:field="*{vehicle.vehicleBrand}"
+                           required autofocus="autofocus"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="model"> Model </label>
+                    <input id="model" type="text" disabled class="form-control" th:field="*{vehicle.vehicleModel}"
+                           required autofocus="autofocus"/>
+                </div>
+
+
+
+                <div class="col-12 col-lg pb-3 pb-lg-0 overflow-hidden">
+                    <div class="form-group">
+                        <label for="startDate">Pickup Date:</label>
+                        <input th:field="*{pickUpDate}" class="form-control w-100"
+                               name="startDate" id="startDate" required>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg pb-3 pb-lg-0 overflow-hidden">
+                    <div class="form-group">
+                        <label for="endDate">Drop-Off Date:</label>
+                        <input th:field="*{dropOffDate}" class="form-control w-100"
+                               name="endDate" id="endDate" required>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg pb-3 pb-lg-0 overflow-hidden">
+                    <div class="form-group">
+                        <label for="pickupTime">Pickup Time:</label>
+
+                        <input th:field="*{pickUpTime}" class="form-control w-100" type="time"
+                               name="pickupTime" id="pickupTime" step="60" min="08:00"
+                               max="17:00" value="" required>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg pb-3 pb-lg-0 overflow-hidden">
+                    <div class="form-group">
+                        <label for="deliveryTime">Drop-Off Time:</label>
+
+                        <input th:field="*{dropOffTime}" class="form-control w-100" type="time"
+                               name="deliveryTime" id="deliveryTime" step="60" min="13:00"
+                               max="17:00" value="" required>
+                    </div>
+                </div>
+
+                <!--                    <div th:object="${equipments}"></div>-->
+                <h2 class="col-12">Choose Equipment</h2>
+                <div th:object="${equipmentList}"></div>
+                <table class="table" border="1">
+                    <thead>
+                    <tr>
+                        <th> Equipment Name</th>
+                        <th> Equipment Description</th>
+                        <th> Equipment Price</th>
+                        <th> Choose</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="equipment:${equipmentList}">
+                        <td th:inline="text"> [[${equipment.equipmentName}]]</td>
+                        <td th:inline="text"> [[${equipment.equipmentDescription}]]</td>
+                        <td th:inline="text"> [[${equipment.price}]]</td>
+
+                        <td>
+                            <input type="checkbox" th:value="${equipment.equipmentID}" name="equipmentID"
+                                   th:id="${equipment.equipmentID}">
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="form-group">
+                    <button type="submit" align="center" class="btn btn-success">Reserve Vehicle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

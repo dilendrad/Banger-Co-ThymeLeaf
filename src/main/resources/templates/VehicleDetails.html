@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Banger And Co</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<br>
+
+<div layout:fragment="page_content" id="page_content" class="container h-100 bg-white overflow-hidden">
+
+    <div class="d-flex justify-content-center py-3">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb purple lighten-4 bg-white">
+                <li class="breadcrumb-item active"><strong class="black-text">Vehicle selection</strong><i class="fas fa-angle-right mx-2" aria-hidden="true"></i></li>
+                <li class="breadcrumb-item"><strong class="black-text">Extras</strong><i class="fas fa-angle-right mx-2" aria-hidden="true"></i></li>
+                <li class="breadcrumb-item"><strong>Driver details</strong><i class="fas fa-angle-right mx-2" aria-hidden="true"></i></li>
+                <li class="breadcrumb-item"><strong>Booking confirmation</strong></li>
+            </ol>
+        </nav>
+    </div>
+    <div class="banner-bootom-w3-agileits py-5">
+        <div class="container py-xl-4 py-lg-2">
+
+            <!-- tittle heading -->
+            <h3 class="tittle-w3l text-center mb-lg-5 mb-sm-4 mb-3">
+                <span>B</span>ooking
+                <span>D</span>etails</h3><br>
+            <!-- //tittle heading -->
+            <div class="row">
+                <div class="col-lg-5 col-md-8 single-right-left ">
+                    <div class="grid images_3_of_2">
+                        <div class="flexslider">
+                            <div class="thumb-image">
+                                <img th:src="@{${'/vehicle/image/display/'+id}}"
+                                     class="img img-responsive img-fluid" alt="">
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-7 single-right-left simpleCart_shelfItem">
+                    <div class="product-single-w3l">
+                        Brand : <span th:text="${brand}" class="mb-3"></span></div>
+                    <div class="product-single-w3l">
+                        Model : <span th:text="${model}" class="mb-3">
+                </span></div>
+                    <div class="product-single-w3l">
+                        Category Type : <span th:text="${categoryType}" class="mb-3">
+                </span></div>
+                    <div class="product-single-w3l">
+                        Category Price : <span th:text="${categoryPrice}" class="mb-3">
+                </span></div>
+                    <div class="product-single-w3l">
+                        Fuel Type : <span th:text="${fuelType}" class="mb-3">
+                </span></div>
+                    <div class="product-single-w3l">
+                        Transmission Type : <span th:text="${transmissionType}" class="mb-3">
+                </span></div>
+                    <div class="product-single-w3l">
+                        Air Conditioning : <span th:text="${airConditioning}" class="mb-3">
+                </span></div>
+                    <div class="product-single-w3l">
+                        Seats : <span th:text="${seats}" class="mb-3">
+                </span></div>
+                    <div class="product-single-w3l">
+                        Doors : <span th:text="${doors}" class="mb-3">
+                </span></div>
+                </div>
+                <br>
+
+                <td><a type="button" class="btn btn-info btn-rounded"
+                       th:href="@{/reservation/createReservation/{id}(id=${id})}">Reserve</a></td>
+
+
+                <a href="/vehicle/show">Go Back</a>
+                &emsp;<a href="/">Go Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+</div>
+</body>
+</html>
