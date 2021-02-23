@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Add Booking</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+</head>
+<body>
+
+<br>
+<br>
+<!-- Create HTML registration form -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <div th:if="${param.success}">
+                <div class="alert alert-info">Booking Created!</div>
+            </div>
+
+            <h1>Add Document</h1>
+            <div th:object="${document}"></div>
+
+            <label class="control-label" for="customerFirstName"> Customer First Name </label>
+            <input id="customerFirstName" type="text" disabled class="form-control"
+                   th:field="*{renter.firstName}"
+                   required autofocus="autofocus"/>
+
+            <div class="form-group">
+                <label class="control-label" for="customerLastName"> Customer Last Name </label>
+                <input id="customerLastName" type="text" disabled class="form-control"
+                       th:field="*{renter.lastName}"
+                       required autofocus="autofocus"/>
+                <br>
+
+                <div>
+                    <form id="uploadDocument" name="uploadDocument" method="post" th:action="@{/document/uploadDocuments}"th:object="${renter}"
+                          encType="multipart/form-data">
+                        <input hidden th:field="*{renterID}"/>
+                        <input type="file" name="files" multiple required />
+                        <br>
+                        <button type="submit" align="center" class="btn btn-success">Add Document</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

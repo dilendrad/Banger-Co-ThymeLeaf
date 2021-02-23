@@ -1,7 +1,10 @@
 package com.bangerco.car_rental.Service;
 
+import com.bangerco.car_rental.Entity.Renter;
+import com.bangerco.car_rental.Entity.Reservation;
 import com.bangerco.car_rental.Entity.Role;
 import com.bangerco.car_rental.Entity.User;
+import com.bangerco.car_rental.Repository.RenterRepository;
 import com.bangerco.car_rental.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,6 +22,9 @@ public class UserService implements UserServiceInterface {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    RenterRepository renterRepository;
 
     @Override
     public User save(User user) {
@@ -67,15 +73,32 @@ public class UserService implements UserServiceInterface {
     public void blacklistRenter(int id)
     {
         User user = userRepository.getOne(id);
+        Renter renter = renterRepository.getByUserID(id);
         user.setStatus("Blacklist");
+        renter.setStatus("Blacklist");
+
+        List<Reservation> reservationList = renter.getReservationList();
+        for(Reservation reservation : reservationList) {
+            reservation.setStatus("Cancelled");
+        }
         userRepository.save(user);
+        renterRepository.save(renter);
     }
 
     @Override
     public void activeRenter(int id)
     {
         User user = userRepository.getOne(id);
+        Renter renter = renterRepository.getByUserID(id);
         user.setStatus("Active");
+        renter.setStatus("Active");
+
+        List<Reservation> reservationList = renter.getReservationList();
+        for(Reservation reservation : reservationList) {
+            reservation.setStatus("Active");
+        }
+
         userRepository.save(user);
+        renterRepository.save(renter);
     }
 }

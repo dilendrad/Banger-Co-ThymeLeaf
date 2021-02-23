@@ -263,6 +263,15 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <title>Administrator Homepage</title>
+
+    <div th:if="${param.success}">
+        <div class="alert alert-info">Reservation Has Been Created!</div>
+    </div>
+
+    <div th:if="${param.failed}">
+        <div class="alert alert-info">This Vehicle Has Already Been Booked! Please Try Again!
+        </div>
+    </div>
 </head>
 <body>
 

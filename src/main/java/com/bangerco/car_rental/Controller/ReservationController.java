@@ -94,17 +94,37 @@ public class ReservationController {
     @PostMapping("/saveReservation")
     public String saveReservation(@ModelAttribute("reservation") ReservationReg reservationReg,
                               @RequestParam(value = "equipmentID", required = false) List<Long> equipmentList) {
+        boolean checkReservation = reservationService.saveReservationForRenter(equipmentList, reservationReg);
 
-        reservationService.saveReservationForRenter(equipmentList, reservationReg);
+        Renter renter = renterService.getRenterByID(reservationReg.getRenterID());
 
-        if(CalculateReservationTotal.pickUpDateIsBeforeDropOffDate(reservationReg.getReservation()) == true) {
-            List<Equipment> newEquipmentList = new ArrayList<>();
-            showEquipment(equipmentList, newEquipmentList);
 
-            return "redirect:/renter/loadHome";
-        } else {
-            return "BookingError";
+        if(checkReservation && (renter.getAge() > 25)) {
+            return "redirect:/renter/loadHome?success";
         }
+
+        else if (!checkReservation && (renter.getAge() > 25)) {
+            return "redirect:/renter/loadHome?failed";
+        }
+        else if (checkReservation && (renter.getAge() < 25)) {
+            return "redirect:/renter/loadHomeBelow25?success";
+            }
+
+        else if (!checkReservation && (renter.getAge() < 25)) {
+            return "redirect:/renter/loadHomeBelow25?failed";
+        }
+
+        return null;
+
+
+//        if(CalculateReservationTotal.pickUpDateIsBeforeDropOffDate(reservationReg.getReservation()) == true) {
+//            List<Equipment> newEquipmentList = new ArrayList<>();
+//            showEquipment(equipmentList, newEquipmentList);
+//
+//            return "redirect:/renter/loadHome";
+//        } else {
+//            return "BookingError";
+//        }
 
     }
 

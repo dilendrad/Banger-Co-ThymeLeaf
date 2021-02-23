@@ -49,7 +49,7 @@ public class ReservationService implements ReservationInterface {
     }
 
     @Override
-    public String saveReservationForRenter(@RequestParam(value = "equipmentID", required = false)
+    public boolean saveReservationForRenter(@RequestParam(value = "equipmentID", required = false)
                                                        List<Long> equipmentList, ReservationReg reservationReg) {
 
 
@@ -83,45 +83,41 @@ public class ReservationService implements ReservationInterface {
             List<Reservation> getAllVehicleReservations = vehicle.getReservationList();
 
 
-                    if (CalculateReservationTotal.pickUpDateIsBeforeDropOffDate(reservation) == true)
-                    {
+                    if (CalculateReservationTotal.pickUpDateIsBeforeDropOffDate(reservation) == true) {
 
-                    if(!validateWithExistingVehicle(getAllVehicleReservations, reservationReg.getVehicleID(),reservation)) {
+                        if (!validateWithExistingVehicle(getAllVehicleReservations, reservationReg.getVehicleID(), reservation)) {
 
-                        List<Reservation> getReservation = new ArrayList<>();
+                            List<Reservation> getReservation = new ArrayList<>();
 
-                        List<Equipment> newEquipmentList = new ArrayList<>();
+                            List<Equipment> newEquipmentList = new ArrayList<>();
 
-                        calculateEquipmentCost(equipmentList, newEquipmentList);
+                            calculateEquipmentCost(equipmentList, newEquipmentList);
 
-                        CalculateReservationTotal.calculateCostBetweenDays(reservation);
+                            CalculateReservationTotal.calculateCostBetweenDays(reservation);
 
-                        double totalBookingPrice = CalculateReservationTotal.calculateTotalReservation(reservation, vehicle, newEquipmentList);
-                        reservation.setTotalCost(totalBookingPrice);
+                            double totalBookingPrice = CalculateReservationTotal.calculateTotalReservation(reservation, vehicle, newEquipmentList);
+                            reservation.setTotalCost(totalBookingPrice);
 
-                        getReservation = renter.getReservationList();
-                        getReservation.add(reservation);
-                        renter.setReservationList(getReservation);
+                            getReservation = renter.getReservationList();
+                            getReservation.add(reservation);
+                            renter.setReservationList(getReservation);
 
-                        reservation.setVehicle(vehicle);
-                        reservation.setRenter(renter);
-                        reservation.setEquipmentList(newEquipmentList);
-                        getReservation = vehicle.getReservationList();
-                        getReservation.add(reservation);
-                        vehicle.setReservationList(getReservation);
-                        reservationRepository.save(reservation);
+                            reservation.setVehicle(vehicle);
+                            reservation.setRenter(renter);
+                            reservation.setEquipmentList(newEquipmentList);
+                            getReservation = vehicle.getReservationList();
+                            getReservation.add(reservation);
+                            vehicle.setReservationList(getReservation);
+                            reservationRepository.save(reservation);
+                            return true;
+                        }
                     }
-
-
-            } else {
-                return "Error";
-            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return "redirect:/renter/loadRenterHomepage";
+        return false;
     }
 
 

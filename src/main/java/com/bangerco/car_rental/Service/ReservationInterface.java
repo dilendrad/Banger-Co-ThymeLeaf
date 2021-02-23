@@ -10,7 +10,7 @@ import java.util.List;
 public interface ReservationInterface {
     List<Reservation> getAllReservations();
 
-    String saveReservationForRenter(@RequestParam(value = "equipmentID", required = false)
+    boolean saveReservationForRenter(@RequestParam(value = "equipmentID", required = false)
                                             List<Long> equipmentList, ReservationReg reservationReg);
 
     double calculateEquipmentCost(List<Long> equipmentList, List<Equipment> newEquipmentList);

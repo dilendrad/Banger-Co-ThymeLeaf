@@ -64,7 +64,7 @@ public class LicenseController {
             }
         }
 
-        return "redirect:/admin/manageRenters";
+        return "redirect:/admin/listRenters";
     }
 }
 
